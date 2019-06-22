@@ -1,7 +1,23 @@
 import React from "react";
 import * as Flex from "@twilio/flex-ui";
 
-class AddIn extends React.Component {
+const style =  {
+  header:{
+    background: "aqua"
+  },
+  footer:{
+    background: "aqua"
+  },
+  dummyText: {
+    background: "aqua"
+  }
+};
+
+/**
+ * Dummy text component
+ */
+class DummyTextComponent extends React.Component {
+
   lorem = `By the Rays of Light I understand its least Parts, and those as well
 Successive in the same Lines, as Contemporary in several Lines. For it
 is manifest that Light consists of Parts, both Successive and
@@ -16,29 +32,35 @@ suffers not, I call Rex of TwiLight.`;
 
   render() {
     return (
-      <p>
+      <p
+        style={style.dummyText}
+      >
         {this.lorem}
       </p>
-    )
+    );
   }
-
 }
 
 /**
- * This component houses the
+ * this component houses the Flex Context and root container. It needs a manager for the Context provider though the rest is modular.
+ * you can add,remove and replace just as you would if the Flex container was in App.js
  */
 class FlexComponents extends React.Component {
 
   componentDidMount() {
-    Flex.MainHeader.Content.add(<CustomContainer
-      key={'custom-part-key'}
-    />)
+
+    //adding customizations
+    Flex.MainHeader.Content.add(
+      <CustomContainer
+        key={'custom-container-key'}
+      />
+    );
   }
 
   render() {
-    const {manager} = this.props;
+    const { manager } = this.props;
 
-    if (!manager){
+    if (!manager) {
       return (
         <div>Loading........</div>
       );
@@ -54,21 +76,30 @@ class FlexComponents extends React.Component {
   }
 }
 
+/**
+ * simulates an existing app to place flex in
+ */
 class CustomContainer extends React.Component {
 
   render() {
+
     return (
       <div
         className={"custom-container"}
       >
-        <section>
+        <section
+          className={'header'}
+          style={style.header}
+        >
           <h1>My Flex in a Box -- Example</h1>
         </section>
-        <AddIn />
-        <FlexComponents
-          manager={this.props.manager}
-        />
-        <footer>
+          <DummyTextComponent />
+          <FlexComponents
+            manager={this.props.manager}
+          />
+        <footer
+          style={style.footer}
+        >
           This is my footer...
         </footer>
       </div>
@@ -78,12 +109,14 @@ class CustomContainer extends React.Component {
 
 class App extends React.Component {
   render() {
+
     const { manager } = this.props;
 
     if (!manager) {
       return null;
     }
 
+    //  using a custom component container
     return (
       <CustomContainer
         manager={manager}
